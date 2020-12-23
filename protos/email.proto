@@ -24,4 +24,6 @@ message EmailRequest {
 message EmailResponse {
     // response error code 
     string ErrorCode = 1;
+    // response error message
+    string ErrorMessage = 2;
 }
