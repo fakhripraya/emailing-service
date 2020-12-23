@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+service Email {
+    // SendEmail is gRPC function to send an email based on the rest API request
+    rpc SendEmail(EmailRequest) returns (EmailResponse);
+}
+
+// EmailRequest defines the request for SendEmail call
+message EmailRequest {
+    // the field of which this email is sent to
+    repeated string To = 1;
+    // the carbon copy of the email
+    repeated string Cc = 2;
+    // the subject of the email
+    string Subject = 3;
+    // the body of the email, containts a parsed email template
+    string Body = 4;
+
+}
+
+// EmailResponse is the response from a SendEmail call
+// it contains an error code and an error message if in case 
+// while sending the email is interrupted
+message EmailResponse {
+    // response error code 
+    int32 ErrorCode = 1;
+}
