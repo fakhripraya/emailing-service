@@ -43,7 +43,7 @@ func (mailer *Mailer) SendEmail(ctx context.Context, rr *protos.EmailRequest) (*
 	}
 
 	if len(to) == 0 {
-		return &protos.EmailResponse{ErrorCode: 404}, fmt.Errorf("Can't find a valid target email")
+		return &protos.EmailResponse{ErrorCode: "404"}, fmt.Errorf("Can't find a valid target email")
 	}
 
 	for _, temp := range rr.Cc {
@@ -53,9 +53,9 @@ func (mailer *Mailer) SendEmail(ctx context.Context, rr *protos.EmailRequest) (*
 	}
 
 	if len(cc) == 0 {
-		return &protos.EmailResponse{ErrorCode: 404}, fmt.Errorf("Can't find a valid target cc")
+		return &protos.EmailResponse{ErrorCode: "404"}, fmt.Errorf("Can't find a valid target cc")
 	}
-
+	mailer.logger.Info("masuk3")
 	// creating new gomail message
 	mail := gomail.NewMessage()
 	mail.SetHeader("From", mailer.cred.Username)
@@ -63,13 +63,13 @@ func (mailer *Mailer) SendEmail(ctx context.Context, rr *protos.EmailRequest) (*
 	mail.SetHeader("Cc", rr.Cc...)
 	mail.SetHeader("Subject", rr.Subject)
 	mail.SetBody("text/html", rr.Body)
-
+	mailer.logger.Info("masuk4")
 	dialer := gomail.NewDialer("smtp.gmail.com", 587, mailer.cred.Username, mailer.cred.Password)
-
+	mailer.logger.Info("masuk5")
 	// Send the email
 	if err := dialer.DialAndSend(mail); err != nil {
-		return &protos.EmailResponse{ErrorCode: 500}, err
+		return &protos.EmailResponse{ErrorCode: "500"}, err
 	}
-
+	mailer.logger.Info("masuk6")
 	return nil, nil
 }

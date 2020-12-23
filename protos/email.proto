@@ -23,5 +23,5 @@ message EmailRequest {
 // while sending the email is interrupted
 message EmailResponse {
     // response error code 
-    int32 ErrorCode = 1;
+    string ErrorCode = 1;
 }
