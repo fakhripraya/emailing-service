@@ -33,7 +33,6 @@ func NewMailer(logger hclog.Logger, email *data.Email, cred *entities.EmailCrede
 // SendEmail is a function to send an email based on the EmailRequest
 func (mailer *Mailer) SendEmail(ctx context.Context, rr *protos.EmailRequest) (*protos.EmailResponse, error) {
 	var to []string
-	var cc []string
 
 	for _, temp := range rr.To {
 		if mailer.email.IsEmailValid(temp) {
@@ -48,30 +47,16 @@ func (mailer *Mailer) SendEmail(ctx context.Context, rr *protos.EmailRequest) (*
 			nil
 	}
 
-	for _, temp := range rr.Cc {
-		if mailer.email.IsEmailValid(temp) {
-			cc = append(cc, temp)
-		}
-	}
-
-	if len(cc) == 0 {
-		return &protos.EmailResponse{
-				ErrorCode:    "404",
-				ErrorMessage: "Can't find a valid target cc"},
-			nil
-	}
-	mailer.logger.Info("masuk3")
 	// creating new gomail message
 	mail := gomail.NewMessage()
 	mail.SetHeader("From", mailer.cred.Username)
 	mail.SetHeader("To", to...)
-
 	mail.SetHeader("Cc", rr.Cc...)
 	mail.SetHeader("Subject", rr.Subject)
 	mail.SetBody("text/html", rr.Body)
-	mailer.logger.Info("masuk4")
+
 	dialer := gomail.NewDialer("smtp.gmail.com", 587, mailer.cred.Username, mailer.cred.Password)
-	mailer.logger.Info("masuk5")
+
 	// Send the email
 	if err := dialer.DialAndSend(mail); err != nil {
 		return &protos.EmailResponse{
@@ -79,6 +64,6 @@ func (mailer *Mailer) SendEmail(ctx context.Context, rr *protos.EmailRequest) (*
 				ErrorMessage: err.Error()},
 			nil
 	}
-	mailer.logger.Info("masuk6")
+
 	return nil, nil
 }
