@@ -65,5 +65,8 @@ func (mailer *Mailer) SendEmail(ctx context.Context, rr *protos.EmailRequest) (*
 			nil
 	}
 
-	return nil, nil
+	return &protos.EmailResponse{
+			ErrorCode:    "200",
+			ErrorMessage: "Status Accepted"},
+		nil
 }
