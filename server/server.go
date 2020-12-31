@@ -55,12 +55,13 @@ func (mailer *Mailer) SendEmail(ctx context.Context, rr *protos.EmailRequest) (*
 	mail.SetHeader("Subject", rr.Subject)
 	mail.SetBody("text/html", rr.Body)
 
+	// create a new gomail dialer based on the app smtp credentials
 	dialer := gomail.NewDialer("smtp.gmail.com", 587, mailer.cred.Username, mailer.cred.Password)
 
 	// Send the email
 	if err := dialer.DialAndSend(mail); err != nil {
 		return &protos.EmailResponse{
-				ErrorCode:    "404",
+				ErrorCode:    "500",
 				ErrorMessage: err.Error()},
 			nil
 	}
