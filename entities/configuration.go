@@ -2,7 +2,7 @@ package entities
 
 // Configuration Entity
 type Configuration struct {
-	AppConfig       AppConfiguration
+	EmailConfig     AppConfiguration
 	EmailCredential EmailCredential
 }
 

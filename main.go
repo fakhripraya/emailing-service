@@ -62,8 +62,8 @@ func main() {
 	reflection.Register(gs)
 
 	// create a TCP socket for inbound server connections
-	logger.Info("Creating TCP socket on " + appConfig.AppConfig.Host + ":" + appConfig.AppConfig.Port)
-	listener, err := net.Listen("tcp", fmt.Sprintf(":"+appConfig.AppConfig.Port))
+	logger.Info("Creating TCP socket on " + appConfig.EmailConfig.Host + ":" + appConfig.EmailConfig.Port)
+	listener, err := net.Listen("tcp", fmt.Sprintf(":"+appConfig.EmailConfig.Port))
 	if err != nil {
 		logger.Error("Unable to create listener", "error", err.Error())
 		os.Exit(1)
